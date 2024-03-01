@@ -30,8 +30,7 @@ with app.app_context():
 @app.route("/")
 
 async def semantic_hello():
-    print("hello world")
-
+    
     todos = Todo.query.all()
     todo = None  # Initialize todo with None
     if todos:
@@ -44,7 +43,9 @@ async def semantic_hello():
             print(f"Error loading recommendations: {e}")
         return render_template('app.html', recommendations=todo.recommendations)
     
-    prompt = f"Create array of 5 items with correct formated JSON syntax without newlines having title and link string properties with links that would be recommendations based on the input string: 'Sign up kids for soccer'"
+    input_string = "Sign up kids for soccer" #modify this to get different recommendations
+    
+    prompt = f"Create array of 5 items with correct formated JSON syntax without newlines having title and link string properties with links that would be recommendations based on the input string: '{ input_string }'"
     response = kernel.create_semantic_function(prompt)
 
     data = await response.invoke()
